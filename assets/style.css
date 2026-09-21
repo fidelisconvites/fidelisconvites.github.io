@@ -539,8 +539,12 @@ body{
   color:var(--olho);
 }
 
+/* título e traço andam juntos: como irmãos soltos, o gap que o pôster ganha
+   no mobile se metia entre os dois e empurrava o traço para baixo */
+.titulo{margin:.5em 0 0}
+
 .display{
-  margin:.5em 0 0;
+  margin:0;
   font-family:var(--titulo-fonte);
   font-weight:400;
   line-height:1.02;
@@ -969,7 +973,7 @@ body{
   }
   .poster{min-height:min(420px,62svh);gap:2.2rem;margin:10px}
   .flyer{width:min(54%,205px);right:-1%;bottom:13%}
-  .display{margin:2.2rem 0}
+  .titulo{margin:2.2rem 0}
   .display__one{font-size:clamp(2.5rem,12.6vw,3.9rem)}
   .display__two{font-size:clamp(1.9rem,9.4vw,2.9rem)}
   .franking{min-height:0;margin-bottom:1.2rem}
