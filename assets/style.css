@@ -5,7 +5,7 @@
 
 :root{
   --display:"Playfair Display","Georgia",serif;
-  --titulo-fonte:"Alfa Slab One","Playfair Display",serif;
+  --titulo-fonte:"Lobster","Playfair Display",serif;
   --sans:"DM Sans","Avenir Next",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Courier New",ui-monospace,monospace;
 
@@ -477,6 +477,36 @@ body{
   fill:var(--primary);
 }
 .convite__regua{stroke:color-mix(in srgb,var(--ink) 28%,transparent);stroke-width:.9}
+.convite__jardim .losango{
+  fill:color-mix(in srgb,var(--primary) 78%,transparent);
+  stroke:none;
+}
+
+/* o lacre: o único ponto de cor cheia da peça */
+.convite__lacre .lacre__cera{
+  fill:var(--primary);
+  stroke:var(--primary-deep);stroke-width:1.2;
+}
+.convite__lacre .lacre__borda{
+  fill:none;
+  stroke:color-mix(in srgb,var(--letter-1) 55%,transparent);stroke-width:.9;
+}
+.convite__lacre .lacre__letra{
+  font-family:var(--display);font-weight:700;font-size:15px;
+  fill:var(--letter-1);
+}
+
+.convite__pe{
+  font-family:var(--sans);font-size:8.2px;font-weight:500;letter-spacing:1.9px;
+  fill:color-mix(in srgb,var(--ink) 55%,transparent);
+}
+
+/* grão de papel, quase imperceptível — só tira o plano do fundo chapado */
+.convite__grao{
+  opacity:.055;
+  mix-blend-mode:multiply;
+  pointer-events:none;
+}
 .convite__data{
   font-family:var(--sans);font-size:10.2px;font-weight:500;letter-spacing:2.1px;
   fill:color-mix(in srgb,var(--ink) 70%,transparent);
@@ -500,17 +530,20 @@ body{
   margin:.5em 0 0;
   font-family:var(--titulo-fonte);
   font-weight:400;
-  line-height:.94;
-  letter-spacing:-.004em;
+  line-height:1.02;
+  letter-spacing:.002em;
+  transform:skewX(-8deg);
+  transform-origin:left bottom;
   text-wrap:balance;
 }
 .display__one,.display__two{display:block}
 .display__one{
-  font-size:clamp(2.8rem,6.3vw,4.9rem);
+  font-size:clamp(3rem,6.8vw,5.3rem);
   color:var(--titulo-1);
+  text-shadow:3px 4px 0 color-mix(in srgb,var(--titulo-2-sombra) 28%,transparent);
 }
 .display__two{
-  font-size:clamp(2.1rem,4.7vw,3.7rem);
+  font-size:clamp(2.3rem,5.1vw,4rem);
   padding-left:.04em;
 }
 .display__two em{
@@ -518,7 +551,26 @@ body{
   color:var(--titulo-2);
   text-shadow:3px 4px 0 color-mix(in srgb,var(--titulo-2-sombra) 55%,transparent);
 }
-.display__two b{font-weight:400;color:var(--titulo-3)}
+.display__two b{
+  font-weight:400;color:var(--titulo-3);
+  text-shadow:3px 4px 0 color-mix(in srgb,var(--titulo-2-sombra) 28%,transparent);
+}
+
+/* o floreio que fecha a manchete, no gosto do letreiro */
+.floreio{
+  display:block;
+  width:min(74%,300px);
+  margin:.35rem 0 0 .1em;
+  fill:var(--titulo-2);
+  filter:drop-shadow(3px 4px 0 color-mix(in srgb,var(--titulo-2-sombra) 28%,transparent));
+  transform:skewX(-8deg);
+  transform-origin:left bottom;
+  animation:surge-floreio .75s var(--ease-out) .54s backwards;
+}
+@keyframes surge-floreio{
+  from{opacity:0;translate:0 9px}
+  to  {opacity:1;translate:0 0}
+}
 
 .poster__foot{margin-top:auto}
 .kicker{
@@ -570,15 +622,33 @@ body{
   from{opacity:0;scale:1.22;rotate:-16deg}
   to  {opacity:.72;scale:1;rotate:-7deg}
 }
-.postmark__waves{width:clamp(56px,7vw,92px);height:clamp(30px,4vw,44px);opacity:.75}
+.postmark__waves{width:clamp(56px,7vw,92px);height:clamp(28px,3.8vw,42px);opacity:.78}
+.onda{stroke-width:2.1}
+.onda--curta{stroke-width:1.7;opacity:.72}
+
 .postmark__seal{width:clamp(62px,8vw,94px);height:auto;margin-left:-.35rem}
+
+.anel{fill:none;stroke:currentColor}
+.anel--fora{stroke-width:2.4}
+.anel--dentro{stroke-width:1}
+
+/* anel de contas: um traço tracejado com ponta redonda vira 48 pontos */
+.contas{
+  fill:none;stroke:currentColor;
+  stroke-width:1.9;stroke-linecap:round;
+  stroke-dasharray:.01 6.15;
+}
+
+.polo{fill:currentColor}
+.barra{stroke:currentColor;stroke-width:1;stroke-linecap:round}
+
 .postmark__top,.postmark__bottom{
-  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.3px;
+  font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:1.5px;
   fill:currentColor;
 }
-.postmark__bottom{font-size:8.6px;letter-spacing:1.6px}
-.postmark__year{font-family:var(--mono);font-size:19px;font-weight:700;fill:currentColor}
-.postmark__city{font-family:var(--mono);font-size:8.5px;letter-spacing:2px;fill:currentColor}
+.postmark__bottom{font-size:8.6px;letter-spacing:1.9px}
+.postmark__year{font-family:var(--mono);font-size:20px;font-weight:700;fill:currentColor}
+.postmark__city{font-family:var(--mono);font-size:8px;letter-spacing:2.4px;fill:currentColor}
 
 .stamp-wrap{
   position:relative;

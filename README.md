@@ -29,7 +29,8 @@ As cores saem do logo oficial em `assets/img/`: marinho `#2F4A6F`, azul claro
 `#97B2CE`, areia `#C4B4A6` e o off-white `#F6F5F1`. A paleta Entardecer sai do
 mesmo tronco, puxada para o sol baixo de fim de tarde. O brasão aparece na marca do
 topo, no favicon e como o primeiro desenho do selo. Tipografia: **Bricolage
-Alfa Slab One** na manchete, um slab de cartaz setentista;
+Lobster** na manchete — o script de letreiro pintado, inclinado
+8°, com sombra deslocada e um floreio afilado fechando a segunda linha;
 **Playfair Display** na marca, nos títulos de seção e no selo, conversando com
 o serif do brasão; **Parisienne** na caligrafia dos convites; **DM Sans** no
 corpo.
@@ -43,9 +44,10 @@ magenta `#951B52`, laranja `#EC6623` e oliva `#585A21`.
 | Areia      | abacate + mostarda sobre aveia          |
 | Azul claro | turquesa + laranja, sobre o deserto     |
 
-Na manchete, "Para" leva sombra deslocada — o truque de cartaz que data a peça.
-As três palavras têm tokens próprios (`--titulo-1/2/3` e `--titulo-2-sombra`),
-então cada paleta rege o seu contraste.
+A inclinação vive no `transform` da manchete, então o floreio entra por
+`translate` para os dois não brigarem pela mesma propriedade. As três palavras
+têm tokens próprios (`--titulo-1/2/3` e `--titulo-2-sombra`), então cada paleta
+rege o seu contraste.
 
 ## Paletas
 
@@ -90,6 +92,14 @@ A pipa é desenhada por projeção axonométrica: dois vetores horizontais e a
 altura geram os quatro cantos, e daí saem as velas, as varas e os tirantes.
 
 ## Selos
+
+O carimbo de cancelamento ao lado é desenhado como um de verdade: anel externo,
+anel de contas (um traço tracejado de ponta redonda vira 48 pontos, sem JS),
+anel interno, os dois arcos de texto, folhinhas nos polos onde os arcos se
+encontram, e as barras de data. A tinta passa por um filtro que come as bordas
+com ruído e ondula o traço de leve — é o que separa um carimbo de um círculo
+vetorial. As quatro ondas de cancelamento se afilam: as de fora são mais curtas
+e mais claras.
 
 O selo é um botão: cada clique carimba o desenho seguinte da cartela — o brasão
 oficial, o monograma entre ramos de louro, alianças entrelaçadas, ramalhete de

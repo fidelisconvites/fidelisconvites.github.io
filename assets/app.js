@@ -248,7 +248,7 @@
        Mesmo papel, mesma caligrafia; o que muda é o ornamento botânico
        e o texto. Cada paleta leva a sua. */
 
-    const pecaConvite = ({ ornamento, olho, nomes, data, pos }) => {
+    const pecaConvite = ({ ornamento, olho, nomes, data, pe, pos, grao, remate }) => {
       const svg = moldura('-3deg', '0 0 300 390');
       svg.classList.add('flyer--convite');
 
@@ -261,6 +261,15 @@
       const jardim = el('g', { class: 'convite__jardim', 'clip-path': 'url(#recorte-convite)' }, cartao);
       ornamento(jardim);
 
+      /* grão de papel: o mesmo ruído que dá textura ao pôster, bem mais fraco */
+      if (grao) {
+        const f = el('filter', { id: 'grao-convite', x: '0%', y: '0%', width: '100%', height: '100%' },
+                     svg.querySelector('defs'));
+        el('feTurbulence', { type: 'fractalNoise', baseFrequency: '.9', numOctaves: '3' }, f);
+        el('feColorMatrix', { type: 'saturate', values: '0' }, f);
+        el('rect', { class: 'convite__grao', x: 22, y: 14, width: 256, height: 362, filter: 'url(#grao-convite)' }, cartao);
+      }
+
       const escreve = (classe, x, y, texto) => {
         const t = el('text', { class: `${classe} surge`, x, y, 'text-anchor': 'middle' }, cartao);
         t.textContent = texto;
@@ -270,8 +279,11 @@
       escreve('convite__nome', pos.n1x, pos.n1, nomes[0]);
       escreve('convite__e', pos.ex, pos.e, '&');
       escreve('convite__nome', pos.n2x, pos.n2, nomes[1]);
-      el('path', { class: 'convite__regua surge', d: `M118 ${pos.regua} L182 ${pos.regua}` }, cartao);
+      if (pos.regua) el('path', { class: 'convite__regua surge', d: `M118 ${pos.regua} L182 ${pos.regua}` }, cartao);
       escreve('convite__data', 150, pos.data, data);
+      if (pe) escreve('convite__pe', 150, pos.pe, pe);
+
+      if (remate) remate(cartao);
 
       /* a escrita surge depois dos traços, de cima para baixo */
       [...cartao.querySelectorAll('.surge')].forEach((n, i) => {
@@ -338,27 +350,68 @@
       flor(j, { x: 150, y: 350, r: 8.5 });
     };
 
-    /* — Moldura: fio duplo, com o ramo rompendo o topo e o pé — */
+    /* — Moldura: fio duplo, cantos guarnecidos e lacre no pé — */
     const molduraFina = (j) => {
       const E = 46, D = 254, T = 42, B = 348;
       const fio = (d, extra = '') => el('path', { class: `traco fio ${extra}`, d }, j);
 
-      fio(`M${E} ${T} L124 ${T}`);
-      fio(`M176 ${T} L${D} ${T}`);
-      fio(`M${E} ${B} L124 ${B}`);
-      fio(`M176 ${B} L${D} ${B}`);
-      fio(`M${E} ${T} L${E} ${B}`);
-      fio(`M${D} ${T} L${D} ${B}`);
+      /* o fio externo abre no topo, no pé e no meio das laterais */
+      fio(`M${E} ${T} L118 ${T}`);
+      fio(`M182 ${T} L${D} ${T}`);
+      fio(`M${E} ${B} L118 ${B}`);
+      fio(`M182 ${B} L${D} ${B}`);
+      fio(`M${E} ${T} L${E} 176`);
+      fio(`M${E} 214 L${E} ${B}`);
+      fio(`M${D} ${T} L${D} 176`);
+      fio(`M${D} 214 L${D} ${B}`);
       fio(`M${E + 5} ${T + 5} L${D - 5} ${T + 5} L${D - 5} ${B - 5} L${E + 5} ${B - 5} Z`, 'fio--fino');
 
-      ramo(j, { x: 150, y: T, giro: 92, comp: 38, folhas: 4, escala: .95 });
-      ramo(j, { x: 150, y: T, giro: -92, comp: 38, folhas: 4, escala: .95 });
-      flor(j, { x: 150, y: T, r: 9.5 });
-      baga(j, { x: 150, y: T - 12, giro: 0, escala: .8 });
+      /* guarnição dos quatro cantos, espelhada */
+      const canto = (x, y, ex, ey) => {
+        const g = el('g', { transform: `translate(${x} ${y}) scale(${ex} ${ey})` }, j);
+        ramo(g, { x: 4, y: 4, giro: 133, comp: 48, folhas: 4, escala: .82 });
+        ramo(g, { x: 4, y: 4, giro: 168, comp: 34, folhas: 3, escala: .76 });
+        ramo(g, { x: 4, y: 4, giro: 98, comp: 32, folhas: 3, escala: .74 });
+        flor(g, { x: 11, y: 11, r: 7.5 });
+        el('circle', { class: 'baga', cx: 3, cy: 3, r: 2 }, g);
+      };
+      canto(E, T, 1, 1);
+      canto(D, T, -1, 1);
+      canto(E, B, 1, -1);
+      canto(D, B, -1, -1);
 
-      ramo(j, { x: 150, y: B, giro: 94, comp: 28, folhas: 3, escala: .9 });
-      ramo(j, { x: 150, y: B, giro: -94, comp: 28, folhas: 3, escala: .9 });
-      flor(j, { x: 150, y: B, r: 7.5 });
+      /* folhas rompendo as laterais, na folga do fio */
+      [[E, 1], [D, -1]].forEach(([x, lado]) => {
+        const g = el('g', { transform: `translate(${x} 195) scale(${lado} 1)` }, j);
+        folha(g, { x: 0, y: 0, L: 17, giro: 78 });
+        folha(g, { x: 0, y: 0, L: 13, giro: 116 });
+        el('circle', { class: 'baga', cx: 2, cy: -9, r: 2 }, g);
+      });
+
+      /* ramo e botão no topo */
+      ramo(j, { x: 150, y: T, giro: 92, comp: 40, folhas: 4, escala: .95 });
+      ramo(j, { x: 150, y: T, giro: -92, comp: 40, folhas: 4, escala: .95 });
+      flor(j, { x: 150, y: T, r: 10 });
+      baga(j, { x: 150, y: T - 13, giro: 0, escala: .8 });
+
+      /* divisor entre os nomes e a data */
+      fio('M100 280 L134 280 M166 280 L200 280');
+      folha(j, { x: 139, y: 280, L: 10, giro: -92 });
+      folha(j, { x: 161, y: 280, L: 10, giro: 92 });
+      el('rect', { class: 'losango', x: 146, y: 276, width: 8, height: 8, transform: 'rotate(45 150 280)' }, j);
+
+      /* ramos pequenos ladeando o lacre, no pé */
+      ramo(j, { x: 128, y: B, giro: -104, comp: 26, folhas: 3, escala: .8 });
+      ramo(j, { x: 172, y: B, giro: 104, comp: 26, folhas: 3, escala: .8 });
+    };
+
+    /* o lacre entra por último, depois da escrita: é o que fecha a peça */
+    const lacre = (cartao) => {
+      const g = el('g', { class: 'convite__lacre surge', transform: 'translate(150 348) rotate(-7)' }, cartao);
+      el('circle', { class: 'lacre__cera', r: 15.5 }, g);
+      el('circle', { class: 'lacre__borda', r: 11.5 }, g);
+      const t = el('text', { class: 'lacre__letra', y: 5.4, 'text-anchor': 'middle' }, g);
+      t.textContent = 'F';
     };
 
     const convite = () => pecaConvite({
@@ -382,7 +435,10 @@
       olho: ['GUARDE A DATA', 'DO NOSSO CASAMENTO'],
       nomes: ['Lívia', 'Caio'],
       data: '27 · SETEMBRO · 2026',
-      pos: { olho: 112, n1x: 150, n1: 190, ex: 150, e: 214, n2x: 150, n2: 250, regua: 280, data: 300 }
+      pe: 'ÀS DEZESSETE HORAS',
+      grao: true,
+      remate: lacre,
+      pos: { olho: 112, n1x: 150, n1: 190, ex: 150, e: 214, n2x: 150, n2: 250, regua: null, data: 302, pe: 320 }
     });
 
     const cenas = {
