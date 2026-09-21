@@ -4,84 +4,109 @@
    ========================================================================== */
 
 :root{
-  --display:"Bricolage Grotesque","DM Sans","Helvetica Neue",sans-serif;
+  --display:"Playfair Display","Georgia",serif;
+  --titulo-fonte:"Alfa Slab One","Playfair Display",serif;
   --sans:"DM Sans","Avenir Next",system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"Courier New",ui-monospace,monospace;
 
-  --rounding:22px;
+  --rounding:0px;          /* o cartão é reto, como papel cortado a fio */
+
+  /* as três palavras do título, para cada paleta reger o seu contraste */
+  --titulo-1:var(--primary);
+  --titulo-2:var(--gold);
+  --titulo-2-sombra:var(--gold-deep);
+  --titulo-3:var(--ink);
+  --olho:var(--primary);
+  --selo-campo:var(--poster-1);   /* o campo do selo, quando o pôster não serve */
   --radius-md:12px;
   --radius-sm:9px;
 
   --ease:cubic-bezier(.22,.61,.36,1);
   --ease-out:cubic-bezier(.16,.84,.44,1);
 
-  /* ── Entardecer (padrão) — o sol baixo de fim de tarde ── */
-  --bg:#f7e2c8;
-  --bg-deep:#eeba8c;
-  --ink:#4a2a24;
-  --primary:#c2562f;
-  --primary-deep:#9c3f1f;
-  --gold:#ab7018;
-  --gold-deep:#83540d;
-  --hill:#d18d63;
-  --hill-far:#e4b18c;
-  --paper:#fffaf3;
-  --panel:#fdf3e6;
-  --poster-1:#ffeed8;
-  --poster-2:#f8c49b;
-  --wing-1:#a8523a;
-  --wing-2:#6e2f20;
-  --letter-1:#fffaf3;
-  --letter-2:#fbe6cd;
-  --chip-a:#c2562f;
-  --chip-b:#e0a33e;
-  --chip-c:#f8c49b;
+  /* ── Entardecer — pôr do sol setentista: laranja queimado e magenta ── */
+  --bg:#f6e3c8;
+  --bg-deep:#eebb87;
+  --ink:#3a2018;
+  --primary:#c1502a;
+  --primary-deep:#993a1a;
+  --gold:#c98a1f;
+  --gold-deep:#9a6710;
+  --hill:#d98d4f;
+  --hill-far:#e8b587;
+  --paper:#fffaf0;
+  --panel:#fdf3e2;
+  --poster-1:#ffeed5;
+  --poster-2:#f3bf8c;
+  --wing-1:#c1502a;
+  --wing-2:#7a2c12;
+  --letter-1:#fffaf0;
+  --letter-2:#fbe8cf;
+  --titulo-2:#951b52;        /* o magenta das mesas, para "Para" */
+  --titulo-2-sombra:#5c0f33;
+  --chip-a:#c1502a;
+  --chip-b:#c98a1f;
+  --chip-c:#951b52;
 }
 
+/* ── Areia — abacate e mostarda, a dupla dos anos 70 ── */
 :root[data-theme="areia"]{
-  --bg:#ece4d7;
-  --bg-deep:#d7c9b3;
-  --ink:#3a3024;
-  --primary:#8a6f4e;
-  --primary-deep:#6a5438;
-  --gold:#2f4a6f;          /* aqui o marinho é que faz o acento */
-  --gold-deep:#1f3350;
-  --hill:#c4b4a6;
-  --hill-far:#dbd0c2;
-  --paper:#fffdf7;
-  --panel:#faf5ea;
-  --poster-1:#f4ecdd;
-  --poster-2:#e1d1b8;
-  --wing-1:#7a6244;
-  --wing-2:#4e3e2a;
-  --letter-1:#fffdf7;
-  --letter-2:#f0e6d3;
-  --chip-a:#c4b4a6;
-  --chip-b:#2f4a6f;
-  --chip-c:#8a6f4e;
+  --bg:#eae3c6;
+  --bg-deep:#d3cba2;
+  --ink:#2f3320;
+  --primary:#5f7038;
+  --primary-deep:#465429;
+  --gold:#c28b1c;
+  --gold-deep:#95680c;
+  --hill:#c9b98d;
+  --hill-far:#ded3b0;
+  --paper:#fffdf2;
+  --panel:#faf5e4;
+  --poster-1:#f6f0da;
+  --poster-2:#e1d8ae;
+  --wing-1:#5f7038;
+  --wing-2:#39441f;
+  --letter-1:#fffdf2;
+  --letter-2:#f0e9cd;
+  --titulo-2:#b96a24;        /* laranja queimado sobre o abacate */
+  --titulo-2-sombra:#7d3f0d;
+  --chip-a:#5f7038;
+  --chip-b:#c28b1c;
+  --chip-c:#b96a24;
 }
 
 :root[data-theme="azul"]{
-  --bg:#e3eaf2;
-  --bg-deep:#c6d5e7;
-  --ink:#26384f;
-  --primary:#4a719f;
-  --primary-deep:#335780;
-  --gold:#bda88f;
-  --gold-deep:#968266;
-  --hill:#9db5d0;
-  --hill-far:#c5d3e4;
-  --paper:#fdfdff;
-  --panel:#f5f8fd;
-  --poster-1:#eaf0f8;
-  --poster-2:#c9d9ea;
-  --wing-1:#5b81ac;
-  --wing-2:#35527a;
-  --letter-1:#fdfdff;
-  --letter-2:#e7edf6;
-  --chip-a:#97b2ce;
-  --chip-b:#2f4a6f;
-  --chip-c:#c4b4a6;
+  /* o azul e a terracota saem da própria bg-desert.jpg */
+  --bg-top:#01718a;        /* zênite, mais fundo — dá base à marca branca */
+  --bg:#038daa;            /* o azul da marca, medido na foto original */
+  --bg-mid:#2da6bb;        /* meio do céu */
+  --bg-deep:#6bb6bb;       /* bruma junto ao horizonte */
+  --ink:#0e333d;
+  --primary:#038daa;
+  --primary-deep:#026a80;
+  --acao:#026a80;          /* o botão desce um tom: em #038daa o texto branco
+                              fica em 3,9:1 e não passa no contraste */
+  --gold:#d4612a;          /* o laranja da ilustração, de acento */
+  --gold-deep:#a03f14;
+  --hill:#d79a63;
+  --hill-far:#e8bb8e;
+  --paper:#fbfdfe;
+  --panel:#f2fafb;
+  --poster-1:#038daa;      /* o mesmo céu da página, sem degrau na borda */
+  --poster-2:#6bb6bb;
+  --titulo-1:#fffdfa;
+  --titulo-2:#ffe3b8;
+  --titulo-2-sombra:#6d1440;   /* sombra magenta: o deslocado setentista */
+  --titulo-3:#0e333d;
+  --olho:color-mix(in srgb,#fffdfa 88%,transparent);
+  --selo-campo:#e4f4f6;    /* o pôster virou céu cheio; o selo fica no tom claro */
+  --wing-1:#0a6d83;
+  --wing-2:#064857;
+  --letter-1:#fbfdfe;
+  --letter-2:#e3f2f4;
+  --chip-a:#038daa;
+  --chip-b:#b56a2a;
+  --chip-c:#e8bb8e;
 }
 
 *,*::before,*::after{box-sizing:border-box}
@@ -129,6 +154,53 @@ body{
 
 /* ── céu de nuvens ────────────────────────────────── */
 .formas{position:absolute;width:0;height:0;overflow:hidden}
+
+/* Cenário de fundo. A imagem tem o céu recortado, então fica ACIMA da camada
+   de nuvens: assim elas passam atrás dos cactos e das mesas, e somem ao cruzar
+   a linha do horizonte, como deve ser. O céu propriamente dito é o degradê do
+   body. Ancorada embaixo, a vegetação assenta na base da página. */
+.fundo{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  background-position:center bottom;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
+
+:root[data-theme="azul"] .fundo{
+  background-image:url("bg-desert.png");
+  /* pela largura, para a paisagem caber inteira: nada de corte nas laterais */
+  background-size:100% auto;
+}
+
+/* o céu é pintado aqui, nos tons medidos na foto */
+:root[data-theme="azul"] body,
+:root[data-theme="azul"] .sky--poster{
+  background:linear-gradient(180deg,
+    var(--bg-top) 0%,
+    var(--bg) 17%,
+    var(--bg-mid) 40%,
+    var(--bg-deep) 70%,
+    var(--bg-deep) 100%);
+}
+
+/* A camada de dentro já está ancorada ao viewport, então recebe o mesmo
+   degradê: o céu do pôster deixa de ser parecido e passa a ser o mesmo. */
+
+/* abaixo do horizonte é chão: as nuvens de lá saem de cena */
+:root[data-theme="azul"] .sky .cloud:nth-child(n+5){display:none}
+
+/* sobre o céu saturado, a marca precisa da tinta escura para se ler */
+:root[data-theme="azul"] .brand__name,
+:root[data-theme="azul"] .brand__kind{color:var(--paper)}
+
+/* a logo é uma cor sólida sobre transparência: inverter basta para deixá-la
+   branca, sem precisar de outro arquivo */
+:root[data-theme="azul"] .brand__mark{filter:brightness(0) invert(1)}
+
+:root[data-theme="azul"] .badge{
+  color:color-mix(in srgb,var(--paper) 88%,transparent);
+  border-color:color-mix(in srgb,var(--paper) 55%,transparent);
+}
 
 .sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 
@@ -179,8 +251,8 @@ body{
 }
 .brand__name,.brand__kind{align-self:baseline}
 .brand__name{
-  font-family:var(--display);font-weight:800;
-  font-size:clamp(1.3rem,2.1vw,1.72rem);letter-spacing:-.022em;
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.3rem,2.1vw,1.72rem);letter-spacing:-.01em;
   color:var(--primary);
 }
 .brand__kind{
@@ -283,7 +355,7 @@ body{
   margin:10px 0 10px 10px;
   padding:clamp(1.25rem,2vw,1.95rem) clamp(1.4rem,2.4vw,2.2rem);
   background:linear-gradient(168deg,var(--poster-1) 0%,var(--poster-2) 100%);
-  border-radius:10px;
+  border-radius:0;
   overflow:hidden;
   isolation:isolate;
 }
@@ -303,6 +375,33 @@ body{
 }
 
 .sky--poster .cloud{opacity:.46}
+:root[data-theme="azul"] .sky--poster .cloud{opacity:.55}
+
+/* O chão ilustrado do pôster. Vem depois das nuvens, então os cactos as
+   escondem — o mesmo empilhamento da paisagem da página. */
+.poster__chao{
+  position:absolute;inset:0;
+  background-position:center bottom;
+  background-size:100% auto;
+  background-repeat:no-repeat;
+  translate:calc(var(--px) * -6px) 0;
+  transition:translate .65s var(--ease-out);
+}
+
+:root[data-theme="azul"] .poster__chao{background-image:url("flyer-bg-blue.png")}
+:root[data-theme="azul"] .hill{display:none}
+
+/* sobre o chão alaranjado o pé do pôster sumiria: um véu quente devolve
+   o contraste, e o texto vai claro */
+:root[data-theme="azul"] .poster__chao::after{
+  content:"";
+  position:absolute;inset:auto 0 0 0;height:44%;
+  background:linear-gradient(180deg,transparent,color-mix(in srgb,#3a1a0c 72%,transparent));
+}
+:root[data-theme="azul"] .kicker{color:color-mix(in srgb,#fffdfa 84%,transparent)}
+:root[data-theme="azul"] .place{color:#fffdfa}
+:root[data-theme="azul"] .place__note{color:color-mix(in srgb,#fffdfa 74%,transparent)}
+:root[data-theme="azul"] .place__mark{stroke:#fffdfa}
 
 .hill{position:absolute;left:0;right:0;bottom:0;width:100%}
 .hill--far{
@@ -335,108 +434,91 @@ body{
   50%    {transform:translate3d(-11px,-17px,0) rotate(5deg)}
 }
 
-/* as penas batem devagar, em torno da raiz da asa */
-.flyer__plume{
-  transform-origin:0 0;
-  animation:flutter 2.9s ease-in-out 1.3s infinite;
+/* ── Entardecer: a peça de convite ── */
+.flyer.flyer--convite{
+  width:min(60%,278px);
+  right:1%;bottom:6%;
 }
-@keyframes flutter{
-  0%,100%{transform:rotate(0deg)}
-  50%    {transform:rotate(-8deg)}
-}
-.flyer__trail{
-  fill:none;stroke:var(--primary);stroke-width:2;stroke-linecap:round;
-  stroke-dasharray:1 9;opacity:.5;
-}
-.flyer__wing path{
-  fill:url(#asa);
-  stroke:color-mix(in srgb,var(--paper) 34%,transparent);
-  stroke-width:1.1;
-}
-.flyer__covert{
-  fill:var(--wing-1);
-  stroke:color-mix(in srgb,var(--paper) 18%,transparent);
-  stroke-width:1.1;
-}
-.flyer__letter rect{stroke:color-mix(in srgb,var(--ink) 55%,transparent);stroke-width:1.8}
-.flyer__flap{fill:none;stroke:color-mix(in srgb,var(--ink) 30%,transparent);stroke-width:1.8;stroke-linejoin:round}
-.flyer__crease{fill:none;stroke:color-mix(in srgb,var(--ink) 16%,transparent);stroke-width:1.4}
-.flyer__seal{fill:var(--primary);stroke:var(--primary-deep);stroke-width:1.5}
-.flyer__monogram{
-  font-family:var(--display);font-weight:700;font-size:19px;
-  fill:var(--letter-1);
+.convite{filter:drop-shadow(0 12px 16px color-mix(in srgb,var(--ink) 24%,transparent))}
+.convite__papel{
+  stroke:color-mix(in srgb,var(--ink) 16%,transparent);
+  stroke-width:1;
 }
 
-/* ── Areia: a pipa caixa ── */
-.pipa__vela{fill:var(--primary)}
-.pipa__vela--frente-d{opacity:.74}
-.pipa__vela--frente-e{opacity:.5}
-.pipa__vela--fundo{opacity:.26}
-.pipa__vara{
-  fill:none;stroke:var(--wing-2);stroke-width:2.2;
+/* o desenho botânico: uma linha só, sem preenchimento */
+.convite__jardim{
+  fill:none;
+  stroke:color-mix(in srgb,var(--ink) 44%,transparent);
+  stroke-width:1.15;
   stroke-linecap:round;
-}
-.pipa__aro{
-  fill:none;stroke:var(--wing-2);stroke-width:1.8;
   stroke-linejoin:round;
 }
-.pipa__tirante{
-  fill:none;stroke:var(--wing-2);stroke-width:1.1;
-  stroke-linecap:round;opacity:.5;
+.convite__jardim .estame{stroke-width:.8;opacity:.75}
+.convite__jardim .nervura{stroke-width:.65;opacity:.7}
+.convite__jardim .caule{stroke-width:1.05}
+.convite__jardim .fio{stroke-width:.95}
+.convite__jardim .fio--fino{stroke-width:.6;opacity:.68}
+.convite__jardim .miolo,
+.convite__jardim .baga{
+  fill:color-mix(in srgb,var(--ink) 44%,transparent);
+  stroke:none;
 }
 
-/* a pipa é alta e estreita: ganha mais largura para não encolher */
-.flyer.flyer--pipa{width:min(74%,352px)}
-.pipa__linha{
-  fill:none;stroke:color-mix(in srgb,var(--ink) 55%,transparent);
-  stroke-width:1.7;stroke-linecap:round;
+.convite__olho{
+  font-family:var(--sans);font-size:9.4px;font-weight:500;letter-spacing:1.9px;
+  fill:color-mix(in srgb,var(--ink) 64%,transparent);
+}
+.convite__nome{
+  font-family:"Parisienne",cursive;font-size:47px;
+  fill:var(--ink);
+}
+.convite__e{
+  font-family:var(--display);font-size:16px;font-style:italic;
+  fill:var(--primary);
+}
+.convite__regua{stroke:color-mix(in srgb,var(--ink) 28%,transparent);stroke-width:.9}
+.convite__data{
+  font-family:var(--sans);font-size:10.2px;font-weight:500;letter-spacing:2.1px;
+  fill:color-mix(in srgb,var(--ink) 70%,transparent);
 }
 
-/* ── Azul claro: o pombo-correio ── */
-.pombo__corpo{
-  fill:url(#asa);
-  stroke:color-mix(in srgb,var(--paper) 26%,transparent);stroke-width:1.2;
-}
-.pombo__cauda path{
-  fill:url(#asa);
-  stroke:color-mix(in srgb,var(--paper) 30%,transparent);stroke-width:1.1;
-}
-.pombo__bico{fill:var(--gold)}
-.pombo__olho{fill:var(--paper)}
-.pombo__fita{
-  fill:none;stroke:var(--gold);stroke-width:2.4;stroke-linecap:round;
+/* a escrita surge depois dos traços */
+.convite .surge{animation:surgir .8s var(--ease-out) backwards}
+@keyframes surgir{
+  from{opacity:0;transform:translateY(9px)}
+  to  {opacity:1;transform:none}
 }
 
 .eyebrow{
   margin:0;
   font-size:clamp(.6rem,.78vw,.72rem);
   font-weight:700;letter-spacing:.17em;text-transform:uppercase;
-  color:var(--primary);
+  color:var(--olho);
 }
 
 .display{
   margin:.5em 0 0;
-  font-family:var(--display);
-  font-weight:800;
-  line-height:.84;
-  letter-spacing:-.04em;
+  font-family:var(--titulo-fonte);
+  font-weight:400;
+  line-height:.94;
+  letter-spacing:-.004em;
   text-wrap:balance;
 }
 .display__one,.display__two{display:block}
 .display__one{
-  font-size:clamp(3.2rem,7.4vw,5.9rem);
-  color:var(--primary);
+  font-size:clamp(2.8rem,6.3vw,4.9rem);
+  color:var(--titulo-1);
 }
 .display__two{
-  font-size:clamp(2.5rem,5.5vw,4.35rem);
-  padding-left:.06em;
+  font-size:clamp(2.1rem,4.7vw,3.7rem);
+  padding-left:.04em;
 }
 .display__two em{
-  font-style:normal;font-weight:800;
-  color:var(--gold);
-  text-shadow:2px 3px 0 color-mix(in srgb,var(--gold-deep) 40%,transparent);
+  font-style:normal;font-weight:400;
+  color:var(--titulo-2);
+  text-shadow:3px 4px 0 color-mix(in srgb,var(--titulo-2-sombra) 55%,transparent);
 }
-.display__two b{font-weight:800;color:var(--ink)}
+.display__two b{font-weight:400;color:var(--titulo-3)}
 
 .poster__foot{margin-top:auto}
 .kicker{
@@ -537,7 +619,7 @@ body{
 }
 
 .stamp__paper{fill:#fff}
-.stamp__field{fill:var(--poster-1);stroke:color-mix(in srgb,var(--primary) 55%,transparent);stroke-width:1.2}
+.stamp__field{fill:var(--selo-campo);stroke:color-mix(in srgb,var(--primary) 55%,transparent);stroke-width:1.2}
 
 /* os desenhos trocam com um esmaecer curto */
 .stamp__art{animation:art-in .45s var(--ease-out) both}
@@ -559,7 +641,7 @@ body{
 .stamp__art .regua{stroke:color-mix(in srgb,var(--primary) 50%,transparent);stroke-width:1.2}
 
 .stamp__monogram{
-  font-family:var(--display);font-weight:800;font-size:58px;
+  font-family:var(--display);font-weight:700;font-size:56px;
   fill:var(--primary);letter-spacing:-.02em;
 }
 .stamp__monogram--num{font-size:46px;letter-spacing:-.04em}
@@ -584,7 +666,7 @@ body{
 
 .ask{
   margin:0 0 clamp(.9rem,2vh,1.35rem);
-  font-family:var(--display);font-weight:800;
+  font-family:var(--display);font-weight:700;
   font-size:clamp(1.5rem,2.5vw,2.1rem);letter-spacing:-.03em;line-height:1.05;
   color:var(--primary-deep);
   text-wrap:balance;
@@ -692,7 +774,7 @@ body{
   width:100%;
   padding:.92rem 1.05rem .92rem 1.35rem;
   border:0;border-radius:var(--radius-md);
-  background:var(--primary);
+  background:var(--acao,var(--primary));
   color:var(--paper);
   font-family:var(--sans);font-size:.96rem;font-weight:600;letter-spacing:-.005em;
   cursor:pointer;
@@ -724,6 +806,7 @@ body{
 .done{
   display:flex;align-items:center;gap:.85rem;
   padding:.85rem 1rem;
+  flex-wrap:wrap;
   border:1.5px dashed color-mix(in srgb,var(--primary) 45%,transparent);
   border-radius:var(--radius-md);
   background:color-mix(in srgb,var(--gold) 12%,var(--paper));
@@ -745,10 +828,27 @@ body{
   background:var(--primary);
 }
 .done__seal svg{width:1.5rem;height:1.5rem;fill:none;stroke:var(--paper);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
-.done__text{margin:0;font-size:.86rem;line-height:1.45;color:var(--ink)}
+.done__text{margin:0;flex:1 1 11rem;font-size:.86rem;line-height:1.45;color:var(--ink)}
 .done__text b{font-family:var(--display);font-size:1rem;font-weight:800}
-.done__back{
+.done__acoes{
   margin-left:auto;flex:none;
+  display:flex;align-items:center;gap:.75rem;
+}
+.done__zap{
+  padding:.34rem .7rem;
+  border:1.5px solid color-mix(in srgb,var(--primary) 45%,transparent);
+  border-radius:999px;
+  font-size:.76rem;font-weight:500;
+  color:var(--primary-deep);
+  text-decoration:none;white-space:nowrap;
+  transition:background .25s var(--ease),border-color .25s var(--ease);
+}
+.done__zap:hover{
+  background:color-mix(in srgb,var(--primary) 12%,transparent);
+  border-color:var(--primary);
+}
+.done__back{
+  flex:none;
   padding:0;border:0;background:none;cursor:pointer;
   font:inherit;font-size:.76rem;
   color:color-mix(in srgb,var(--ink) 65%,transparent);
@@ -787,8 +887,8 @@ body{
   .poster{min-height:min(420px,62svh);gap:2.2rem;margin:10px}
   .flyer{width:min(54%,205px);right:-1%;bottom:13%}
   .display{margin:2.2rem 0}
-  .display__one{font-size:clamp(3rem,15vw,4.4rem)}
-  .display__two{font-size:clamp(2.2rem,11vw,3.3rem)}
+  .display__one{font-size:clamp(2.5rem,12.6vw,3.9rem)}
+  .display__two{font-size:clamp(1.9rem,9.4vw,2.9rem)}
   .franking{min-height:0;margin-bottom:1.2rem}
   .stamp{width:clamp(76px,20vw,104px)}
   .postmark__seal{width:clamp(56px,15vw,80px)}
@@ -801,7 +901,7 @@ body{
   .palette{padding:.42rem .5rem}
   .panel__foot{flex-direction:column;align-items:flex-start;gap:.5rem}
   .done{flex-wrap:wrap}
-  .done__back{margin-left:3.25rem}
+  .done__acoes{margin-left:3.25rem}
 }
 
 @media (prefers-reduced-motion:reduce){

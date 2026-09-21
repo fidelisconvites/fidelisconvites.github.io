@@ -12,18 +12,6 @@
     return n;
   };
 
-  /* Uma pena: folha alongada apontando para -x, com a raiz na origem. */
-  const pena = (L, w) =>
-    `M0 0 C${(-0.32 * L).toFixed(1)} ${-w},${(-0.72 * L).toFixed(1)} ${(-0.62 * w).toFixed(1)},${-L} 0 ` +
-    `C${(-0.72 * L).toFixed(1)} ${(0.62 * w).toFixed(1)},${(-0.32 * L).toFixed(1)} ${w},0 0Z`;
-
-  /* Leque de penas preso a um ponto — serve de asa e de cauda. */
-  const leque = (pai, plano, classe) => {
-    const g = el('g', { class: classe }, pai);
-    plano.forEach(([ang, L, w]) => el('path', { d: pena(L, w), transform: `rotate(${ang})` }, g));
-    return g;
-  };
-
   /* ── os selos da coleção ───────────────────────────────────────────
      Clicar no selo troca o desenho, como quem escolhe outro na cartela. */
   (function selos() {
@@ -166,6 +154,76 @@
     });
   })();
 
+  /* ── desenho botânico em linha, para a peça de convite ───────────── */
+
+  /* Gota apontando para cima, com a raiz na origem: serve de pétala e de folha. */
+  const gota = (L, w) =>
+    `M0 0 C${(-w).toFixed(1)} ${(-L * 0.34).toFixed(1)},` +
+    `${(-w * 0.92).toFixed(1)} ${(-L * 0.76).toFixed(1)},0 ${(-L).toFixed(1)} ` +
+    `C${(w * 0.92).toFixed(1)} ${(-L * 0.76).toFixed(1)},` +
+    `${w.toFixed(1)} ${(-L * 0.34).toFixed(1)},0 0 Z`;
+
+  const folha = (pai, { x, y, L, giro = 0 }) => {
+    const g = el('g', { transform: `translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${giro.toFixed(1)})` }, pai);
+    el('path', { class: 'traco', d: gota(L, L * 0.27) }, g);
+    el('path', { class: 'traco nervura', d: `M0 -${(L * 0.12).toFixed(1)} L0 -${(L * 0.88).toFixed(1)}` }, g);
+    return g;
+  };
+
+  const flor = (pai, { x, y, r, petalas = 5, giro = 0 }) => {
+    const g = el('g', { transform: `translate(${x} ${y}) rotate(${giro})` }, pai);
+    for (let i = 0; i < petalas; i++) {
+      el('path', { class: 'traco', d: gota(r, r * 0.5), transform: `rotate(${(i * 360 / petalas).toFixed(1)})` }, g);
+    }
+    for (let i = 0; i < petalas; i++) {
+      const a = i * 360 / petalas + 180 / petalas;
+      el('path', { class: 'traco estame', d: `M0 0 L0 -${(r * 0.36).toFixed(1)}`, transform: `rotate(${a.toFixed(1)})` }, g);
+    }
+    el('circle', { class: 'miolo', r: (r * 0.14).toFixed(1) }, g);
+    return g;
+  };
+
+  /* Rosa: um miolo em espiral aberta, cercado por pétalas soltas. */
+  const rosa = (pai, { x, y, escala = 1, giro = 0 }) => {
+    const g = el('g', { transform: `translate(${x} ${y}) rotate(${giro}) scale(${escala})` }, pai);
+    el('path', { class: 'traco', d: 'M1 1 C4 -2,8 0,8 4 C8 9,2 12,-3 10 C-10 7,-12 -1,-8 -8 C-3 -15,7 -17,14 -11 C21 -4,20 8,13 15' }, g);
+    el('path', { class: 'traco', d: 'M-14 11 C-22 3,-21 -11,-11 -18' }, g);
+    el('path', { class: 'traco', d: 'M-8 -20 C2 -25,14 -22,20 -13' }, g);
+    el('path', { class: 'traco', d: 'M22 -9 C27 1,26 13,18 19' }, g);
+    el('path', { class: 'traco', d: 'M15 21 C6 26,-6 24,-13 16' }, g);
+    return g;
+  };
+
+  const baga = (pai, { x, y, giro = 0, escala = 1 }) => {
+    const g = el('g', { transform: `translate(${x} ${y}) rotate(${giro}) scale(${escala})` }, pai);
+    el('path', { class: 'traco', d: 'M0 0 C2 -5,1 -10,-1 -14 M0 0 C-3 -4,-5 -8,-5 -13 M0 0 C3 -4,6 -7,8 -11' }, g);
+    [[-1, -15], [-5.5, -14], [8.6, -12]].forEach(([bx, by]) =>
+      el('circle', { class: 'baga', cx: bx, cy: by, r: 1.9 }, g));
+    return g;
+  };
+
+  /* Ramo: um caule quadrático com folhas alternadas ao longo dele. */
+  const ramo = (pai, { x, y, giro = 0, comp = 60, folhas = 5, escala = 1, curva = 0.34 }) => {
+    const g = el('g', { transform: `translate(${x} ${y}) rotate(${giro}) scale(${escala})` }, pai);
+    const P1 = [comp * curva, -comp * 0.5];
+    const P2 = [comp * curva * 0.45, -comp];
+
+    el('path', { class: 'traco caule', d: `M0 0 Q${P1[0].toFixed(1)} ${P1[1].toFixed(1)} ${P2[0].toFixed(1)} ${P2[1].toFixed(1)}` }, g);
+
+    for (let i = 1; i <= folhas; i++) {
+      const t = i / (folhas + 0.55);
+      const u = 1 - t;
+      const px = 2 * u * t * P1[0] + t * t * P2[0];
+      const py = 2 * u * t * P1[1] + t * t * P2[1];
+      const tx = 2 * u * P1[0] + 2 * t * (P2[0] - P1[0]);
+      const ty = 2 * u * P1[1] + 2 * t * (P2[1] - P1[1]);
+      const tangente = Math.atan2(ty, tx) * 180 / Math.PI + 90;
+      const lado = i % 2 ? -1 : 1;
+      folha(g, { x: px, y: py, L: comp * 0.29 * (1 - t * 0.4), giro: tangente + lado * 44 });
+    }
+    return g;
+  };
+
   /* ── a cena do postal ───────────────────────────────────────────────
      Cada paleta tem a sua: quem leva o convite muda junto com o papel. */
   const cenario = (() => {
@@ -173,8 +231,8 @@
     const longe = $('.hill--far path');
     const perto = $('.hill--near path');
 
-    const moldura = (tilt) => {
-      const svg = el('svg', { class: 'flyer', viewBox: '0 0 340 250', 'aria-hidden': 'true' });
+    const moldura = (tilt, vb = '0 0 340 250') => {
+      const svg = el('svg', { class: 'flyer', viewBox: vb, 'aria-hidden': 'true' });
       svg.style.setProperty('--tilt', tilt);
       const defs = el('defs', {}, svg);
       const asa = el('linearGradient', { id: 'asa', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
@@ -186,130 +244,146 @@
       return svg;
     };
 
-    /* ── Bordô: o convite ganha asas ── */
-    const convite = () => {
-      const svg = moldura('-6deg');
-      el('path', { class: 'flyer__trail', d: 'M8 214 C 74 210 108 186 132 156' }, svg);
+    /* ── As peças de convite ────────────────────────────────────────
+       Mesmo papel, mesma caligrafia; o que muda é o ornamento botânico
+       e o texto. Cada paleta leva a sua. */
 
-      const plano = [[-30, 76, 8.6], [-17, 91, 9.8], [-4, 101, 10.2], [9, 97, 9.6], [22, 84, 8.6]];
-      [false, true].forEach((espelha) => {
-        const g = el('g', {
-          class: 'flyer__wing',
-          transform: espelha ? 'translate(226 102) scale(-1 1) rotate(-36)'
-                             : 'translate(114 102) rotate(-36)'
-        }, svg);
-        const plume = leque(g, plano, 'flyer__plume');
-        el('ellipse', { class: 'flyer__covert', cx: -16, cy: 1, rx: 19, ry: 13, transform: 'rotate(-4)' }, plume);
-      });
+    const pecaConvite = ({ ornamento, olho, nomes, data, pos }) => {
+      const svg = moldura('-3deg', '0 0 300 390');
+      svg.classList.add('flyer--convite');
 
-      const carta = el('g', { class: 'flyer__letter' }, svg);
-      el('rect', { x: 112, y: 84, width: 116, height: 80, rx: 7, fill: 'url(#papel)' }, carta);
-      el('path', { class: 'flyer__flap', d: 'M112 91 L170 132 L228 91' }, carta);
-      el('path', { class: 'flyer__crease', d: 'M112 160 L152 126 M228 160 L188 126' }, carta);
-      el('circle', { class: 'flyer__seal', cx: 170, cy: 140, r: 15 }, carta);
-      const m = el('text', { class: 'flyer__monogram', x: 170, y: 146, 'text-anchor': 'middle' }, carta);
-      m.textContent = 'F';
-      return svg;
-    };
+      const clip = el('clipPath', { id: 'recorte-convite' }, svg.querySelector('defs'));
+      el('rect', { x: 22, y: 14, width: 256, height: 362 }, clip);
 
-    /* ── Areia: uma pipa caixa, com o convite amarrado na linha ── */
-    const pipa = () => {
-      const svg = moldura('-11deg');
-      svg.classList.add('flyer--pipa');
+      const cartao = el('g', { class: 'convite' }, svg);
+      el('rect', { class: 'convite__papel', x: 22, y: 14, width: 256, height: 362, fill: 'url(#papel)' }, cartao);
 
-      /* Projeção axonométrica: duas arestas horizontais e a altura.
-         Os cantos do topo são T (fundo), R (direita), F (frente) e L (esquerda). */
-      const O = [166, 10];
-      const a = [56, 29];
-      const b = [-48, 25];
-      const H = 150;
-      const cantos = { T: [0, 0], R: [1, 0], F: [1, 1], L: [0, 1] };
+      const jardim = el('g', { class: 'convite__jardim', 'clip-path': 'url(#recorte-convite)' }, cartao);
+      ornamento(jardim);
 
-      const v = (nome, h) => {
-        const [ka, kb] = cantos[nome];
-        return [
-          (O[0] + ka * a[0] + kb * b[0]).toFixed(1),
-          (O[1] + ka * a[1] + kb * b[1] + h).toFixed(1)
-        ];
+      const escreve = (classe, x, y, texto) => {
+        const t = el('text', { class: `${classe} surge`, x, y, 'text-anchor': 'middle' }, cartao);
+        t.textContent = texto;
       };
-      const face = (n1, n2, h1, h2) => `M${v(n1, h1)} L${v(n2, h1)} L${v(n2, h2)} L${v(n1, h2)} Z`;
-      const aro = (h) => `M${v('T', h)} L${v('R', h)} L${v('F', h)} L${v('L', h)} Z`;
-      const risco = (n1, h1, n2, h2) => `M${v(n1, h1)} L${v(n2, h2)}`;
 
-      const celas = [[0, 58], [92, H]];          // as duas faixas de tecido
-      const g = el('g', { class: 'flyer__kite' }, svg);
+      olho.forEach((linha, i) => escreve('convite__olho', 150, pos.olho + i * 14, linha));
+      escreve('convite__nome', pos.n1x, pos.n1, nomes[0]);
+      escreve('convite__e', pos.ex, pos.e, '&');
+      escreve('convite__nome', pos.n2x, pos.n2, nomes[1]);
+      el('path', { class: 'convite__regua surge', d: `M118 ${pos.regua} L182 ${pos.regua}` }, cartao);
+      escreve('convite__data', 150, pos.data, data);
 
-      // o tecido do fundo, que se adivinha por transparência
-      celas.forEach(([h1, h2]) => {
-        el('path', { class: 'pipa__vela pipa__vela--fundo', d: face('L', 'T', h1, h2) }, g);
-        el('path', { class: 'pipa__vela pipa__vela--fundo', d: face('T', 'R', h1, h2) }, g);
+      /* a escrita surge depois dos traços, de cima para baixo */
+      [...cartao.querySelectorAll('.surge')].forEach((n, i) => {
+        n.style.animationDelay = `${(1.3 + i * 0.1).toFixed(2)}s`;
       });
 
-      // e o da frente, em duas luzes
-      celas.forEach(([h1, h2]) => {
-        el('path', { class: 'pipa__vela pipa__vela--frente-e', d: face('L', 'F', h1, h2) }, g);
-        el('path', { class: 'pipa__vela pipa__vela--frente-d', d: face('F', 'R', h1, h2) }, g);
-      });
-
-      // as quatro varas de ponta a ponta
-      ['T', 'R', 'F', 'L'].forEach((n) => el('path', { class: 'pipa__vara', d: risco(n, 0, n, H) }, g));
-
-      // os aros de cada boca
-      [0, 58, 92, H].forEach((h) => el('path', { class: 'pipa__aro', d: aro(h) }, g));
-
-      // o cruzeiro da boca de cima e os tirantes dentro de cada faixa
-      el('path', { class: 'pipa__tirante', d: risco('T', 0, 'F', 0) }, g);
-      el('path', { class: 'pipa__tirante', d: risco('R', 0, 'L', 0) }, g);
-      celas.forEach(([h1, h2]) => {
-        [['L', 'F'], ['F', 'R']].forEach(([n1, n2]) => {
-          el('path', { class: 'pipa__tirante', d: risco(n1, h1, n2, h2) }, g);
-          el('path', { class: 'pipa__tirante', d: risco(n2, h1, n1, h2) }, g);
-        });
-      });
-
-      // a linha desce até a mão de quem empina
-      el('path', { class: 'pipa__linha', d: 'M170 187 C140 206 100 218 52 224' }, svg);
-
-      // o convite vai amarrado no meio da linha
-      el('path', { class: 'pipa__linha', d: 'M118 210 L114 218' }, svg);
-      const carta = el('g', { class: 'flyer__letter' }, svg);
-      el('rect', { x: 96, y: 218, width: 38, height: 25, rx: 3, fill: 'url(#papel)' }, carta);
-      el('path', { class: 'flyer__flap', d: 'M96 220.5 L115 233.5 L134 220.5' }, carta);
-      el('circle', { class: 'flyer__seal', cx: 115, cy: 234, r: 5 }, carta);
       return svg;
     };
 
-    /* ── Noite: o pombo-correio traz o convite pela fita ── */
-    const pombo = () => {
-      const svg = moldura('-4deg');
-      el('path', { class: 'flyer__trail', d: 'M12 206 C 70 202 106 186 130 166' }, svg);
+    /* — Jardim: buquê transbordando o canto de cima, eco no pé — */
+    const jardimCanto = (j) => {
+      ramo(j, { x: 128, y: 24, giro: 112, comp: 84, folhas: 6 });
+      ramo(j, { x: 100, y: 66, giro: 58, comp: 96, folhas: 7 });
+      ramo(j, { x: 28, y: 84, giro: -82, comp: 66, folhas: 5 });
+      ramo(j, { x: 62, y: 142, giro: -24, comp: 88, folhas: 6 });
+      ramo(j, { x: 40, y: 30, giro: 22, comp: 62, folhas: 5 });
+      ramo(j, { x: 150, y: 58, giro: 130, comp: 72, folhas: 5 });
+      ramo(j, { x: 160, y: 28, giro: 118, comp: 66, folhas: 5 });
+      rosa(j, { x: 60, y: 66, escala: 1.65, giro: -12 });
+      rosa(j, { x: 24, y: 132, escala: 1.0, giro: 34 });
+      flor(j, { x: 112, y: 36, r: 19, giro: 14 });
+      flor(j, { x: 30, y: 98, r: 13, giro: -22 });
+      flor(j, { x: 134, y: 90, r: 11, giro: 42 });
+      flor(j, { x: 80, y: 20, r: 10, giro: -8 });
+      flor(j, { x: 174, y: 50, r: 9, giro: 24 });
+      baga(j, { x: 50, y: 162, giro: 16 });
+      baga(j, { x: 148, y: 56, giro: -44 });
+      baga(j, { x: 20, y: 60, giro: 8 });
 
-      const g = el('g', { class: 'flyer__dove' }, svg);
-
-      leque(el('g', { transform: 'translate(206 134) rotate(188)' }, g),
-            [[-14, 46, 7], [0, 52, 7.6], [14, 47, 7]], 'pombo__cauda');
-
-      el('path', {
-        class: 'pombo__corpo',
-        d: 'M118 122 C136 110 178 110 202 120 C210 124 215 128 216 134 ' +
-           'C206 145 186 153 160 153 C136 153 118 145 112 134 C109 128 112 124 118 122 Z'
-      }, g);
-      el('circle', { class: 'pombo__corpo', cx: 107, cy: 120, r: 11 }, g);
-      el('path', { class: 'pombo__bico', d: 'M97 118 L82 122 L97 126 Z' }, g);
-      el('circle', { class: 'pombo__olho', cx: 104, cy: 116, r: 1.9 }, g);
-
-      // penas quase paralelas: leque estreito lê como asa, não como crista
-      const asa = el('g', { class: 'flyer__wing', transform: 'translate(170 130) rotate(121)' }, g);
-      const plume = leque(asa, [[-9, 76, 12], [-4.5, 86, 12.5], [0, 94, 12.5], [4.5, 88, 12], [9, 78, 11.5]], 'flyer__plume');
-      el('ellipse', { class: 'flyer__covert', cx: -20, cy: 1, rx: 24, ry: 14, transform: 'rotate(-3)' }, plume);
-
-      el('path', { class: 'pombo__fita', d: 'M82 123 C66 140 60 160 70 176' }, g);
-      const carta = el('g', { class: 'flyer__letter' }, g);
-      el('rect', { x: 52, y: 174, width: 38, height: 26, rx: 3.5, fill: 'url(#papel)' }, carta);
-      el('path', { class: 'flyer__flap', d: 'M52 176.5 L71 190 L90 176.5' }, carta);
-      el('circle', { class: 'flyer__seal', cx: 71, cy: 191, r: 5.5 }, carta);
-      return svg;
+      ramo(j, { x: 258, y: 330, giro: 168, comp: 72, folhas: 6 });
+      ramo(j, { x: 278, y: 356, giro: -112, comp: 58, folhas: 5 });
+      ramo(j, { x: 236, y: 362, giro: -168, comp: 48, folhas: 4 });
+      rosa(j, { x: 268, y: 364, escala: 1.2, giro: 172 });
+      flor(j, { x: 234, y: 378, r: 13, giro: -16 });
+      flor(j, { x: 276, y: 320, r: 10, giro: 30 });
+      baga(j, { x: 228, y: 340, giro: -156 });
     };
+
+    /* — Arco: uma guirlanda aberta por cima dos nomes — */
+    const arcoFlorido = (j) => {
+      const cx = 150, cy = 150, rx = 98, ry = 92;
+      const ponto = (a) => [cx + rx * Math.cos(a), cy + ry * Math.sin(a)];
+      const tangente = (a) => Math.atan2(ry * Math.cos(a), -rx * Math.sin(a)) * 180 / Math.PI;
+
+      const n = 30;
+      for (let i = 0; i <= n; i++) {
+        const t = i / n;
+        const a = Math.PI + t * Math.PI;
+        const [px, py] = ponto(a);
+        const lado = i % 2 ? 1 : -1;
+        folha(j, { x: px, y: py, L: 12 + 7 * Math.sin(t * Math.PI), giro: tangente(a) + 90 + lado * 54 });
+      }
+      [0.1, 0.32, 0.5, 0.68, 0.9].forEach((t, k) => {
+        const [px, py] = ponto(Math.PI + t * Math.PI);
+        flor(j, { x: px, y: py, r: k === 2 ? 15 : 10.5, giro: t * 200 });
+      });
+      rosa(j, { x: cx - rx + 4, y: cy - 12, escala: 1.25, giro: -28 });
+      rosa(j, { x: cx + rx - 4, y: cy - 12, escala: 1.1, giro: 208 });
+      baga(j, { x: cx - 54, y: cy - 74, giro: -34 });
+      baga(j, { x: cx + 56, y: cy - 72, giro: 36 });
+
+      ramo(j, { x: 150, y: 352, giro: 104, comp: 42, folhas: 4 });
+      ramo(j, { x: 150, y: 352, giro: -104, comp: 42, folhas: 4 });
+      flor(j, { x: 150, y: 350, r: 8.5 });
+    };
+
+    /* — Moldura: fio duplo, com o ramo rompendo o topo e o pé — */
+    const molduraFina = (j) => {
+      const E = 46, D = 254, T = 42, B = 348;
+      const fio = (d, extra = '') => el('path', { class: `traco fio ${extra}`, d }, j);
+
+      fio(`M${E} ${T} L124 ${T}`);
+      fio(`M176 ${T} L${D} ${T}`);
+      fio(`M${E} ${B} L124 ${B}`);
+      fio(`M176 ${B} L${D} ${B}`);
+      fio(`M${E} ${T} L${E} ${B}`);
+      fio(`M${D} ${T} L${D} ${B}`);
+      fio(`M${E + 5} ${T + 5} L${D - 5} ${T + 5} L${D - 5} ${B - 5} L${E + 5} ${B - 5} Z`, 'fio--fino');
+
+      ramo(j, { x: 150, y: T, giro: 92, comp: 38, folhas: 4, escala: .95 });
+      ramo(j, { x: 150, y: T, giro: -92, comp: 38, folhas: 4, escala: .95 });
+      flor(j, { x: 150, y: T, r: 9.5 });
+      baga(j, { x: 150, y: T - 12, giro: 0, escala: .8 });
+
+      ramo(j, { x: 150, y: B, giro: 94, comp: 28, folhas: 3, escala: .9 });
+      ramo(j, { x: 150, y: B, giro: -94, comp: 28, folhas: 3, escala: .9 });
+      flor(j, { x: 150, y: B, r: 7.5 });
+    };
+
+    const convite = () => pecaConvite({
+      ornamento: jardimCanto,
+      olho: ['COM ALEGRIA CONVIDAMOS', 'PARA O NOSSO CASAMENTO'],
+      nomes: ['Alice', 'Otávio'],
+      data: '12 · DEZEMBRO · 2026',
+      pos: { olho: 176, n1x: 130, n1: 246, ex: 126, e: 268, n2x: 172, n2: 300, regua: 324, data: 344 }
+    });
+
+    const conviteArco = () => pecaConvite({
+      ornamento: arcoFlorido,
+      olho: ['CONVITE DE CASAMENTO'],
+      nomes: ['Beatriz', 'Henrique'],
+      data: '04 · ABRIL · 2026',
+      pos: { olho: 118, n1x: 150, n1: 202, ex: 150, e: 226, n2x: 150, n2: 262, regua: 292, data: 312 }
+    });
+
+    const conviteMoldura = () => pecaConvite({
+      ornamento: molduraFina,
+      olho: ['GUARDE A DATA', 'DO NOSSO CASAMENTO'],
+      nomes: ['Lívia', 'Caio'],
+      data: '27 · SETEMBRO · 2026',
+      pos: { olho: 112, n1x: 150, n1: 190, ex: 150, e: 214, n2x: 150, n2: 250, regua: 280, data: 300 }
+    });
 
     const cenas = {
       entardecer: {
@@ -318,15 +392,36 @@
         perto: 'M0 200 L0 128 C 150 44 330 38 470 82 C 520 98 566 104 600 100 L600 200 Z'
       },
       areia: {
-        desenha: pipa,
+        desenha: conviteArco,
         longe: 'M0 220 L0 160 C 90 108 172 104 252 132 C 332 160 420 92 510 100 C 546 103 576 112 600 122 L600 220 Z',
         perto: 'M0 200 L0 150 C 80 92 162 96 242 136 C 322 176 400 132 480 112 C 526 101 566 104 600 112 L600 200 Z'
       },
       azul: {
-        desenha: pombo,
+        desenha: conviteMoldura,
         longe: 'M0 220 L0 176 C 150 150 300 142 450 152 C 512 156 562 162 600 168 L600 220 Z',
         perto: 'M0 200 L0 166 C 120 128 262 124 402 142 C 472 151 546 158 600 156 L600 200 Z'
       }
+    };
+
+    /* Os traços do desenho botânico se fazem sozinhos: só dá para medir o
+       comprimento de um path depois que ele está no documento. */
+    const parado = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const desenhar = (raiz) => {
+      if (!raiz || parado) return;
+      const tracos = raiz.querySelectorAll('.traco');
+      if (!tracos.length) return;
+      // o passo é proporcional: o desenho inteiro sai em ~1,4s, seja qual for
+      // o número de traços, em vez de arrastar por vários segundos
+      const passo = 1400 / tracos.length;
+      tracos.forEach((p, i) => {
+        const L = p.getTotalLength();
+        if (!L) return;
+        p.style.strokeDasharray = L;
+        p.animate(
+          [{ strokeDashoffset: L }, { strokeDashoffset: 0 }],
+          { duration: 520, delay: 340 + i * passo, easing: 'cubic-bezier(.45,0,.2,1)', fill: 'both' }
+        );
+      });
     };
 
     return {
@@ -336,6 +431,7 @@
         perto?.setAttribute('d', c.perto);
         // elemento novo a cada troca: a animação de chegada reinicia sozinha
         palco?.replaceChildren(c.desenha());
+        desenhar(palco);
       }
     };
   })();
@@ -376,9 +472,9 @@
     if (!botao || !nome) return;
 
     const opcoes = [
-      { id: 'entardecer', rotulo: 'Entardecer', cor: '#f7e2c8' },
-      { id: 'areia',      rotulo: 'Areia',      cor: '#ece4d7' },
-      { id: 'azul',       rotulo: 'Azul claro', cor: '#e3eaf2' }
+      { id: 'entardecer', rotulo: 'Entardecer', cor: '#f6e3c8' },
+      { id: 'areia',      rotulo: 'Areia',      cor: '#eae3c6' },
+      { id: 'azul',       rotulo: 'Azul claro', cor: '#038daa' }
     ];
 
     const guardado = (() => {
@@ -413,6 +509,7 @@
   const form = $('#form');
   const done = $('#done');
   const doneLinha = $('#done-linha');
+  const abrirZap = $('#abrir-zap');
 
   const modos = {
     email: {
@@ -521,6 +618,8 @@
     limpaErro();
     escondidos.forEach(sel => { $(sel, form).hidden = true; });
     doneLinha.textContent = m.feito;
+    // no modo WhatsApp a conversa fica a um clique
+    if (abrirZap) abrirZap.hidden = modo !== 'zap';
     done.hidden = false;
     done.querySelector('.done__back').focus();
   });

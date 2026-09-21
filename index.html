@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sim, Para Sempre — Fidelis Convites</title>
 <meta name="description" content="Ateliê de convites feitos à mão. Receba o catálogo completo e uma amostra do papel pelo correio.">
-<meta name="theme-color" content="#f7e2c8">
+<meta name="theme-color" content="#f6e3c8">
 <meta property="og:title" content="Sim, Para Sempre — Fidelis Convites">
 <meta property="og:description" content="Ateliê de convites feitos à mão. Catálogo completo e amostra do papel pelo correio.">
 <meta property="og:type" content="website">
 <link rel="icon" href="assets/img/LOGO%20FIDELIS%20OFICIAL%20MARINHO%20FUNDO%20TRANSPARENTE.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..48,75..100,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Playfair+Display:ital,wght@0,400..900;1,400..700&family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Parisienne&display=swap">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body id="topo">
@@ -27,6 +27,9 @@
     <g id="nuvem-c"><path d="M27 87C12 87 4 77 4 64C4 50 16 39 32 40C29 24 42 13 58 18C67 0 94 0 108 12C115 18 119 25 120 32C138 29 154 40 154 54C171 53 183 63 182 76C181 90 167 95 152 88C141 103 123 99 115 88Z"></path></g>
   </defs>
 </svg>
+
+<!-- cenário de fundo: só a paleta Azul claro o veste -->
+<div class="fundo" aria-hidden="true"></div>
 
 <!-- céu de nuvens, ao fundo -->
 <div class="sky" aria-hidden="true">
@@ -77,6 +80,8 @@
 
         <svg class="hill hill--far" viewBox="0 0 600 220" preserveAspectRatio="none"><path></path></svg>
         <svg class="hill hill--near" viewBox="0 0 600 200" preserveAspectRatio="none"><path></path></svg>
+
+        <div class="poster__chao"></div>
 
         <div class="flyer-wrap"></div>
       </div>
@@ -186,7 +191,10 @@
             <svg viewBox="0 0 40 40"><path d="M12 20.5 L17.6 26 L28 14.5"></path></svg>
           </span>
           <p class="done__text"><b>Anotado. ♡</b><br><span id="done-linha">O catálogo já está a caminho do seu e-mail.</span></p>
-          <button class="done__back" type="button" id="refazer">corrigir o endereço</button>
+          <span class="done__acoes">
+            <a class="done__zap" id="abrir-zap" href="https://wa.me/5587999617324?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20receber%20o%20cat%C3%A1logo%20da%20Fidelis%20Convites." target="_blank" rel="noopener" hidden>abrir a conversa ↗</a>
+            <button class="done__back" type="button" id="refazer">corrigir o endereço</button>
+          </span>
         </div>
       </form>
 
@@ -194,7 +202,7 @@
         <p class="signoff">Até logo, noivos. <span aria-hidden="true">♡</span></p>
         <nav class="links" aria-label="Redes do ateliê">
           <a href="#">Instagram</a>
-          <a href="#">WhatsApp</a>
+          <a href="https://wa.me/5587999617324?text=Ol%C3%A1%21%20Vim%20pelo%20site%20e%20gostaria%20de%20receber%20o%20cat%C3%A1logo%20da%20Fidelis%20Convites." target="_blank" rel="noopener">WhatsApp</a>
         </nav>
       </footer>
     </section>
