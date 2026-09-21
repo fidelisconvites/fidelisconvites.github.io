@@ -1,6 +1,6 @@
 /* ==========================================================================
    Fidelis Convites — papelaria digital
-   Paletas trocáveis · tipografia Fraunces + DM Sans
+   Paletas trocáveis · Lobster, Playfair Display, Parisienne e DM Sans
    ========================================================================== */
 
 :root{
@@ -76,7 +76,7 @@
 }
 
 :root[data-theme="azul"]{
-  /* o azul e a terracota saem da própria bg-desert.jpg */
+  /* o azul e a terracota saem das próprias imagens do deserto */
   --bg-top:#01718a;        /* zênite, mais fundo — dá base à marca branca */
   --bg:#038daa;            /* o azul da marca, medido na foto original */
   --bg-mid:#2da6bb;        /* meio do céu */
@@ -105,7 +105,7 @@
   --letter-1:#fbfdfe;
   --letter-2:#e3f2f4;
   --chip-a:#038daa;
-  --chip-b:#b56a2a;
+  --chip-b:#d4612a;
   --chip-c:#e8bb8e;
 }
 
@@ -173,8 +173,7 @@ body{
 }
 
 /* o céu é pintado aqui, nos tons medidos na foto */
-:root[data-theme="azul"] body,
-:root[data-theme="azul"] .sky--poster{
+:root[data-theme="azul"] body{
   background:linear-gradient(180deg,
     var(--bg-top) 0%,
     var(--bg) 17%,
@@ -182,9 +181,6 @@ body{
     var(--bg-deep) 70%,
     var(--bg-deep) 100%);
 }
-
-/* A camada de dentro já está ancorada ao viewport, então recebe o mesmo
-   degradê: o céu do pôster deixa de ser parecido e passa a ser o mesmo. */
 
 /* abaixo do horizonte é chão: as nuvens de lá saem de cena */
 :root[data-theme="azul"] .sky .cloud:nth-child(n+5){display:none}
@@ -388,8 +384,25 @@ body{
   transition:translate .65s var(--ease-out);
 }
 
-:root[data-theme="azul"] .poster__chao{background-image:url("flyer-bg-blue.png")}
 :root[data-theme="azul"] .hill{display:none}
+
+/* ── O pôster é uma janela ────────────────────────────────────────────
+   Sem fundo próprio — nem o dele nem o do cartão — o painel deixa passar
+   o que já está atrás: o céu, as nuvens e a foto do deserto. Como o céu
+   de dentro e o de fora já eram o mesmo degradê, não há degrau: a
+   paisagem atravessa o cartão e ele passa a emoldurá-la, em vez de
+   repeti-la. */
+:root[data-theme="azul"] .card{background:none}
+:root[data-theme="azul"] .poster{
+  background:none;
+  /* a margem de papel vira borda: sem o fundo do cartão ela sumiria, e é
+     ela que faz a moldura da janela */
+  margin:0;
+  border:10px solid var(--paper);
+  border-right-width:0;
+}
+:root[data-theme="azul"] .poster::after{opacity:0}   /* a textura de papel sai junto */
+:root[data-theme="azul"] .sky--poster{display:none}  /* as nuvens de verdade já aparecem */
 
 /* sobre o chão alaranjado o pé do pôster sumiria: um véu quente devolve
    o contraste, e o texto vai claro */
