@@ -60,6 +60,13 @@ primavera e os quinze anos. Os desenhos são montados em SVG por `app.js`; o ser
 
 ## Movimento
 
+O céu é **um só**. As nuvens estão declaradas duas vezes no HTML — uma camada
+no fundo e outra dentro do pôster — para que nasçam no mesmo instante e andem
+em fase. A de dentro é ancorada às coordenadas do viewport (medidas por
+`offsetLeft`/`offsetTop`, imunes ao `transform` da entrada do cartão) e
+recortada pelo pôster, de modo que a nuvem atravessa a borda em vez de sumir
+nela. A deriva é só `transform`, para o quadro sair da CPU.
+
 A entrada é escalonada: o cartão pousa, o conteúdo sobe em sequência, o convite
 chega voando, o carimbo entinta e o selo é prensado. Em repouso, as nuvens
 atravessam o céu, as penas batem devagar e a cena do pôster segue o cursor de

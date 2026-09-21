@@ -340,6 +340,35 @@
     };
   })();
 
+  /* ── um céu só ──────────────────────────────────────────────────────
+     As duas camadas de nuvens estão declaradas no HTML, lado a lado, para
+     nascerem no mesmo instante — sincronizá-las depois seria frágil. Aqui
+     só ancoramos a de dentro às coordenadas do viewport, de modo que a
+     nuvem atravesse a borda do cartão em vez de sumir nela. */
+  (function ceu() {
+    const poster = $('.poster');
+    if (!poster || !$('.sky--poster')) return;
+
+    /* getBoundingClientRect() erraria aqui: a entrada do cartão anima um
+       transform, e a medida sairia deslocada. offsetLeft/offsetTop dão a
+       posição de layout, que nenhum transform contamina. */
+    let pendente = 0;
+    const medir = () => {
+      pendente = 0;
+      let x = 0, y = 0;
+      for (let n = poster; n; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+      poster.style.setProperty('--poster-left', `${x - scrollX}px`);
+      poster.style.setProperty('--poster-top', `${y - scrollY}px`);
+    };
+    const agendar = () => { if (!pendente) pendente = requestAnimationFrame(medir); };
+
+    medir();
+    addEventListener('resize', agendar);
+    addEventListener('scroll', agendar, { passive: true });
+    if ('ResizeObserver' in window) new ResizeObserver(agendar).observe(poster);
+    document.fonts?.ready.then(medir);
+  })();
+
   /* ── paletas de papel ──────────────────────────────────────────────── */
   (function paletas() {
     const botao = $('#palette');

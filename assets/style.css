@@ -128,7 +128,23 @@ body{
 .skip:focus-visible{translate:-50% 0}
 
 /* ── céu de nuvens ────────────────────────────────── */
+.formas{position:absolute;width:0;height:0;overflow:hidden}
+
 .sky{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+
+/* O céu é um só. Dentro do pôster vai a mesma camada, deslocada para
+   coincidir com o viewport, de modo que a nuvem atravessa a borda do
+   cartão sem sumir — o recorte é o próprio pôster. */
+.sky--poster{
+  position:absolute;
+  inset:auto auto auto auto;
+  top:calc(-1 * var(--poster-top, 0px));
+  left:calc(-1 * var(--poster-left, 0px));
+  width:100vw;
+  height:100svh;
+  overflow:visible;
+  z-index:0;
+}
 
 .cloud{
   position:absolute;
@@ -140,9 +156,10 @@ body{
   opacity:.55;
   animation:drift var(--dur) linear var(--delay) infinite;
 }
+/* só transform: o quadro sai da CPU e vai para o compositor */
 @keyframes drift{
-  0% {left:0;   transform:translate(-100%)}
-  to {left:100%;transform:translate(0)}
+  from{transform:translateX(-100%)}
+  to  {transform:translateX(100vw)}
 }
 
 /* ── topo ─────────────────────────────────────────── */
@@ -285,7 +302,7 @@ body{
   transition:translate .55s var(--ease-out);
 }
 
-.poster__scene .cloud{opacity:.5}
+.sky--poster .cloud{opacity:.46}
 
 .hill{position:absolute;left:0;right:0;bottom:0;width:100%}
 .hill--far{
