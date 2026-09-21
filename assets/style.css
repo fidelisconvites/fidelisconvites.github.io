@@ -167,7 +167,7 @@ body{
 }
 
 :root[data-theme="azul"] .fundo{
-  background-image:url("bg-desert.png");
+  background-image:url("bg-desert.webp");
   /* pela largura, para a paisagem caber inteira: nada de corte nas laterais */
   background-size:100% auto;
 }

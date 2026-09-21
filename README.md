@@ -63,7 +63,7 @@ pôster e o seu recorte de colinas:
 | ---------- | ------------------------------------------ | ------------------------------------- |
 | Entardecer | céu liso de fim de tarde                   | o convite alado                       |
 | Areia      | céu liso                                   | uma pipa caixa com o convite na linha |
-| Azul claro | a foto `assets/bg-desert.png`              | o pombo-correio puxando a fita        |
+| Azul claro | a foto `assets/bg-desert.webp`              | o pombo-correio puxando a fita        |
 
 Só a paleta Azul claro veste o fundo com foto. O PNG tem o céu recortado — é só
 a paisagem, metade da imagem em transparência — o que permite empilhar assim:
@@ -129,4 +129,8 @@ Alterna entre e-mail e WhatsApp — troca rótulo, `type`, `inputmode`,
 confirmação com um lacre e um link para corrigir o endereço.
 
 O WhatsApp do ateliê (`wa.me/5587999617324`, com a mensagem já escrita) está no
-link do rodapé e, no modo WhatsApp, num botão dentro da confirmação.
+link do rodapé e, no modo WhatsApp, num botão dentro da confirmação. O
+Instagram do ateliê é [@fidelis.papelariafina](https://www.instagram.com/fidelis.papelariafina/).
+
+A foto do deserto é WebP com alfa (350 KB, contra 2,7 MB do PNG de origem): o
+canal alfa é o que recorta o céu, então o formato precisava preservá-lo.
