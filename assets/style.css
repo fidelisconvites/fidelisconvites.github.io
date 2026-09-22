@@ -172,6 +172,120 @@ body{
   background-size:100% auto;
 }
 
+/* a praia também tem o céu recortado: o degradê de areia faz o céu */
+:root[data-theme="areia"] .fundo{
+  background-image:url("bg-beach.webp");
+  background-size:100% auto;
+}
+
+/* ── O sol da praia ──
+   Três camadas, como numa foto contra a luz:
+   1. o disco e o clarão vão no próprio céu do body (fixo, como o degradê);
+   2. o ::before são os raios da estrela — dois leques de períodos
+      diferentes, para não ficarem regulares — que giram e respiram. Vem
+      antes da .sky no empilhamento, então as nuvens passam na frente;
+   3. o ::after é o reflexo na lente: o risco horizontal que atravessa o
+      sol e os fantasmas que ele deixa na linha sol → centro do quadro.
+      Fica acima da praia e abaixo do conteúdo, em modo screen, então só
+      aparece de verdade sobre o que é escuro — como na câmera. */
+:root[data-theme="areia"]{
+  --sol-x:44vw;
+  --sol-y:25svh;
+  --sol-r:clamp(30px,4.2vw,62px);
+  /* do sol até o centro do quadro: os fantasmas correm sobre esta reta */
+  --sol-dx:calc(50vw - var(--sol-x));
+  --sol-dy:calc(50svh - var(--sol-y));
+}
+/* no celular o pôster ocupa a largura: o sol sobe para o canto, longe do título */
+@media (max-width:900px){
+  :root[data-theme="areia"]{--sol-x:78vw;--sol-y:16svh}
+}
+:root[data-theme="areia"] body{
+  background:
+    /* o disco: branco no miolo, dourado só na beira, que se desfaz no céu */
+    radial-gradient(circle at var(--sol-x) var(--sol-y),
+      #fff 0, #fffef6 calc(var(--sol-r) * .62),
+      #fff6d2 calc(var(--sol-r) * .88), color-mix(in srgb,#ffe7a0 85%,transparent) var(--sol-r),
+      transparent calc(var(--sol-r) * 1.3)),
+    /* o clarão curto, que estoura o céu em volta */
+    radial-gradient(circle at var(--sol-x) var(--sol-y),
+      color-mix(in srgb,#fffbe8 95%,transparent) 0,
+      color-mix(in srgb,#fff0b8 70%,transparent) calc(var(--sol-r) * 1.6),
+      color-mix(in srgb,#ffe39a 30%,transparent) calc(var(--sol-r) * 3.2),
+      transparent calc(var(--sol-r) * 6)),
+    /* o calor largo, que aquece metade do céu */
+    radial-gradient(circle at var(--sol-x) var(--sol-y),
+      color-mix(in srgb,#ffd98a 34%,transparent) 0,
+      transparent 55vmax),
+    radial-gradient(120% 90% at 50% 8%, color-mix(in srgb,var(--paper) 55%, transparent) 0%, transparent 62%),
+    linear-gradient(176deg, var(--bg) 0%, var(--bg-deep) 100%);
+  background-attachment:fixed;
+}
+:root[data-theme="areia"] body::before{
+  content:"";
+  position:fixed;z-index:0;pointer-events:none;
+  left:var(--sol-x);top:var(--sol-y);
+  width:calc(var(--sol-r) * 12);aspect-ratio:1;
+  translate:-50% -50%;
+  background:
+    repeating-conic-gradient(from 3deg,
+      color-mix(in srgb,#fff6d6 70%,transparent) 0deg 1.2deg,
+      transparent 1.2deg 7deg),
+    repeating-conic-gradient(from 0deg,
+      color-mix(in srgb,#ffe7a6 45%,transparent) 0deg 4deg,
+      transparent 4deg 17deg);
+  -webkit-mask:radial-gradient(circle, transparent calc(var(--sol-r) * .7), #000 calc(var(--sol-r) * 1.15), color-mix(in srgb,#000 35%,transparent) 30%, transparent 70%);
+          mask:radial-gradient(circle, transparent calc(var(--sol-r) * .7), #000 calc(var(--sol-r) * 1.15), color-mix(in srgb,#000 35%,transparent) 30%, transparent 70%);
+  animation:sol-gira 140s linear infinite, sol-brilha 4.5s ease-in-out infinite alternate;
+}
+:root[data-theme="areia"] body::after{
+  content:"";
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  mix-blend-mode:screen;
+  background:
+    /* o risco anamórfico: fino e branco, com uma bainha quente */
+    radial-gradient(ellipse 42vw 2px at var(--sol-x) var(--sol-y),
+      #fff 0, color-mix(in srgb,#fff 0%,transparent) 100%),
+    radial-gradient(ellipse 30vw 16px at var(--sol-x) var(--sol-y),
+      color-mix(in srgb,#ffd27a 55%,transparent) 0, transparent 100%),
+    /* o arco-íris em volta do sol, bem fraco */
+    radial-gradient(circle at var(--sol-x) var(--sol-y),
+      transparent calc(var(--sol-r) * 4.4),
+      color-mix(in srgb,#ff9f6b 16%,transparent) calc(var(--sol-r) * 4.6),
+      color-mix(in srgb,#ffe68a 18%,transparent) calc(var(--sol-r) * 4.8),
+      color-mix(in srgb,#8fe0c4 14%,transparent) calc(var(--sol-r) * 5),
+      color-mix(in srgb,#a6a4ff 12%,transparent) calc(var(--sol-r) * 5.2),
+      transparent calc(var(--sol-r) * 5.45)),
+    /* os fantasmas, do sol para o outro lado do centro */
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * .42) calc(var(--sol-y) + var(--sol-dy) * .42),
+      color-mix(in srgb,#ffb566 55%,transparent) 0, color-mix(in srgb,#ffb566 40%,transparent) 10px, transparent 14px),
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * .7) calc(var(--sol-y) + var(--sol-dy) * .7),
+      transparent 30px, color-mix(in srgb,#ffd08a 30%,transparent) 36px, transparent 41px),
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * 1.1) calc(var(--sol-y) + var(--sol-dy) * 1.1),
+      color-mix(in srgb,#7fd6c0 14%,transparent) 0, color-mix(in srgb,#7fd6c0 22%,transparent) 54px, transparent 62px),
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * 1.32) calc(var(--sol-y) + var(--sol-dy) * 1.32),
+      color-mix(in srgb,#fff4d0 70%,transparent) 0, transparent 9px),
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * 1.62) calc(var(--sol-y) + var(--sol-dy) * 1.62),
+      transparent 92px,
+      color-mix(in srgb,#ff9fb0 12%,transparent) 100px,
+      color-mix(in srgb,#ffe08a 16%,transparent) 106px,
+      color-mix(in srgb,#8fd8ff 12%,transparent) 112px,
+      transparent 120px),
+    radial-gradient(circle at calc(var(--sol-x) + var(--sol-dx) * 1.95) calc(var(--sol-y) + var(--sol-dy) * 1.95),
+      color-mix(in srgb,#ffc27a 30%,transparent) 0, color-mix(in srgb,#ffc27a 20%,transparent) 22px, transparent 28px);
+  animation:sol-lente 6s ease-in-out infinite alternate;
+}
+@keyframes sol-gira{to{rotate:360deg}}
+@keyframes sol-brilha{
+  from{opacity:.7;scale:.96}
+  to{opacity:1;scale:1.04}
+}
+/* a lente tremula um pouco, como quando o ar esquenta */
+@keyframes sol-lente{
+  from{opacity:.75}
+  to{opacity:1}
+}
+
 /* o céu é pintado aqui, nos tons medidos na foto */
 :root[data-theme="azul"] body{
   background:linear-gradient(180deg,
@@ -183,7 +297,7 @@ body{
 }
 
 /* abaixo do horizonte é chão: as nuvens de lá saem de cena */
-:root[data-theme="azul"] .sky .cloud:nth-child(n+5){display:none}
+:root:is([data-theme="azul"],[data-theme="areia"]) .sky .cloud:nth-child(n+5){display:none}
 
 /* sobre o céu saturado, a marca precisa da tinta escura para se ler */
 :root[data-theme="azul"] .brand__name,
@@ -384,16 +498,16 @@ body{
   transition:translate .65s var(--ease-out);
 }
 
-:root[data-theme="azul"] .hill{display:none}
+:root:is([data-theme="azul"],[data-theme="areia"]) .hill{display:none}
 
 /* ── O pôster é uma janela ────────────────────────────────────────────
    Sem fundo próprio — nem o dele nem o do cartão — o painel deixa passar
-   o que já está atrás: o céu, as nuvens e a foto do deserto. Como o céu
+   o que já está atrás: o céu, as nuvens e a foto do deserto (ou da praia). Como o céu
    de dentro e o de fora já eram o mesmo degradê, não há degrau: a
    paisagem atravessa o cartão e ele passa a emoldurá-la, em vez de
    repeti-la. */
-:root[data-theme="azul"] .card{background:none}
-:root[data-theme="azul"] .poster{
+:root:is([data-theme="azul"],[data-theme="areia"]) .card{background:none}
+:root:is([data-theme="azul"],[data-theme="areia"]) .poster{
   background:none;
   /* a margem de papel vira borda: sem o fundo do cartão ela sumiria, e é
      ela que faz a moldura da janela */
@@ -401,20 +515,20 @@ body{
   border:10px solid var(--paper);
   border-right-width:0;
 }
-:root[data-theme="azul"] .poster::after{opacity:0}   /* a textura de papel sai junto */
-:root[data-theme="azul"] .sky--poster{display:none}  /* as nuvens de verdade já aparecem */
+:root:is([data-theme="azul"],[data-theme="areia"]) .poster::after{opacity:0}   /* a textura de papel sai junto */
+:root:is([data-theme="azul"],[data-theme="areia"]) .sky--poster{display:none}  /* as nuvens de verdade já aparecem */
 
 /* sobre o chão alaranjado o pé do pôster sumiria: um véu quente devolve
    o contraste, e o texto vai claro */
-:root[data-theme="azul"] .poster__chao::after{
+:root:is([data-theme="azul"],[data-theme="areia"]) .poster__chao::after{
   content:"";
   position:absolute;inset:auto 0 0 0;height:44%;
   background:linear-gradient(180deg,transparent,color-mix(in srgb,#3a1a0c 72%,transparent));
 }
-:root[data-theme="azul"] .kicker{color:color-mix(in srgb,#fffdfa 84%,transparent)}
-:root[data-theme="azul"] .place{color:#fffdfa}
-:root[data-theme="azul"] .place__note{color:color-mix(in srgb,#fffdfa 74%,transparent)}
-:root[data-theme="azul"] .place__mark{stroke:#fffdfa}
+:root:is([data-theme="azul"],[data-theme="areia"]) .kicker{color:color-mix(in srgb,#fffdfa 84%,transparent)}
+:root:is([data-theme="azul"],[data-theme="areia"]) .place{color:#fffdfa}
+:root:is([data-theme="azul"],[data-theme="areia"]) .place__note{color:color-mix(in srgb,#fffdfa 74%,transparent)}
+:root:is([data-theme="azul"],[data-theme="areia"]) .place__mark{stroke:#fffdfa}
 
 .hill{position:absolute;left:0;right:0;bottom:0;width:100%}
 .hill--far{
