@@ -528,7 +528,7 @@
     if (!botao || !nome) return;
 
     const opcoes = [
-      { id: 'entardecer', rotulo: 'Entardecer', cor: '#f6e3c8' },
+      { id: 'entardecer', rotulo: 'Entardecer', cor: '#ffffff' },
       { id: 'areia',      rotulo: 'Areia',      cor: '#eae3c6' },
       { id: 'azul',       rotulo: 'Azul claro', cor: '#038daa' }
     ];

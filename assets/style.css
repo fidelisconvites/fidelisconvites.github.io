@@ -178,6 +178,22 @@ body{
   background-size:100% auto;
 }
 
+/* a montanha também tem o céu recortado; aqui o céu é branco, da cor da neve
+   dos picos, para a paisagem não ganhar um contorno contra o fundo */
+:root[data-theme="entardecer"] .fundo{
+  background-image:url("bg-beach-mountain.webp");
+  background-size:100% auto;
+}
+:root[data-theme="entardecer"] body{
+  background:linear-gradient(180deg,
+    #ffffff 0%,
+    #ffffff 45%,
+    #f1f3f2 75%,
+    #eceeec 100%);
+}
+/* nuvem branca em céu branco some: elas ganham o cinza-azulado da bruma */
+:root[data-theme="entardecer"] .cloud{fill:#c9d2d8}
+
 /* ── O sol da praia ──
    Três camadas, como numa foto contra a luz:
    1. o disco e o clarão vão no próprio céu do body (fixo, como o degradê);
@@ -297,7 +313,7 @@ body{
 }
 
 /* abaixo do horizonte é chão: as nuvens de lá saem de cena */
-:root:is([data-theme="azul"],[data-theme="areia"]) .sky .cloud:nth-child(n+5){display:none}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .sky .cloud:nth-child(n+5){display:none}
 
 /* sobre o céu saturado, a marca precisa da tinta escura para se ler */
 :root[data-theme="azul"] .brand__name,
@@ -498,7 +514,7 @@ body{
   transition:translate .65s var(--ease-out);
 }
 
-:root:is([data-theme="azul"],[data-theme="areia"]) .hill{display:none}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .hill{display:none}
 
 /* ── O pôster é uma janela ────────────────────────────────────────────
    Sem fundo próprio — nem o dele nem o do cartão — o painel deixa passar
@@ -506,8 +522,8 @@ body{
    de dentro e o de fora já eram o mesmo degradê, não há degrau: a
    paisagem atravessa o cartão e ele passa a emoldurá-la, em vez de
    repeti-la. */
-:root:is([data-theme="azul"],[data-theme="areia"]) .card{background:none}
-:root:is([data-theme="azul"],[data-theme="areia"]) .poster{
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .card{background:none}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .poster{
   background:none;
   /* a margem de papel vira borda: sem o fundo do cartão ela sumiria, e é
      ela que faz a moldura da janela */
@@ -515,20 +531,20 @@ body{
   border:10px solid var(--paper);
   border-right-width:0;
 }
-:root:is([data-theme="azul"],[data-theme="areia"]) .poster::after{opacity:0}   /* a textura de papel sai junto */
-:root:is([data-theme="azul"],[data-theme="areia"]) .sky--poster{display:none}  /* as nuvens de verdade já aparecem */
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .poster::after{opacity:0}   /* a textura de papel sai junto */
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .sky--poster{display:none}  /* as nuvens de verdade já aparecem */
 
 /* sobre o chão alaranjado o pé do pôster sumiria: um véu quente devolve
    o contraste, e o texto vai claro */
-:root:is([data-theme="azul"],[data-theme="areia"]) .poster__chao::after{
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .poster__chao::after{
   content:"";
   position:absolute;inset:auto 0 0 0;height:44%;
   background:linear-gradient(180deg,transparent,color-mix(in srgb,#3a1a0c 72%,transparent));
 }
-:root:is([data-theme="azul"],[data-theme="areia"]) .kicker{color:color-mix(in srgb,#fffdfa 84%,transparent)}
-:root:is([data-theme="azul"],[data-theme="areia"]) .place{color:#fffdfa}
-:root:is([data-theme="azul"],[data-theme="areia"]) .place__note{color:color-mix(in srgb,#fffdfa 74%,transparent)}
-:root:is([data-theme="azul"],[data-theme="areia"]) .place__mark{stroke:#fffdfa}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .kicker{color:color-mix(in srgb,#fffdfa 84%,transparent)}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .place{color:#fffdfa}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .place__note{color:color-mix(in srgb,#fffdfa 74%,transparent)}
+:root:is([data-theme="azul"],[data-theme="areia"],[data-theme="entardecer"]) .place__mark{stroke:#fffdfa}
 
 .hill{position:absolute;left:0;right:0;bottom:0;width:100%}
 .hill--far{

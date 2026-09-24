@@ -61,7 +61,7 @@ pôster e o seu recorte de colinas:
 
 | Paleta     | Cenário                                    | Quem leva o convite                   |
 | ---------- | ------------------------------------------ | ------------------------------------- |
-| Entardecer | céu liso de fim de tarde                   | o convite alado                       |
+| Entardecer | a foto `assets/bg-beach-mountain.webp`, céu branco | o convite alado                       |
 | Areia      | céu liso                                   | uma pipa caixa com o convite na linha |
 | Azul claro | a foto `assets/bg-desert.webp`              | o pombo-correio puxando a fita        |
 
