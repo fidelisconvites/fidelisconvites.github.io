@@ -26,7 +26,7 @@ Depois abra <http://127.0.0.1:8777/>.
 ## Identidade
 
 As cores saem do logo oficial em `assets/img/`: marinho `#2F4A6F`, azul claro
-`#97B2CE`, areia `#C4B4A6` e o off-white `#F6F5F1`. A paleta Entardecer sai do
+`#97B2CE`, areia `#C4B4A6` e o off-white `#F6F5F1`. A paleta Montanha sai do
 mesmo tronco, puxada para o sol baixo de fim de tarde. O brasão aparece na marca do
 topo, no favicon e como o primeiro desenho do selo. Tipografia: **Bricolage
 Lobster** na manchete — o script de letreiro pintado, inclinado
@@ -40,9 +40,9 @@ magenta `#951B52`, laranja `#EC6623` e oliva `#585A21`.
 
 | Paleta     | Dupla                                   |
 | ---------- | --------------------------------------- |
-| Entardecer | laranja queimado + magenta sobre creme  |
-| Areia      | abacate + mostarda sobre aveia          |
-| Azul claro | turquesa + laranja, sobre o deserto     |
+| Montanha   | laranja queimado + magenta sobre creme  |
+| Praia      | abacate + mostarda sobre aveia          |
+| Deserto    | turquesa + laranja, sobre o deserto     |
 
 A inclinação vive no `transform` da manchete, então o floreio entra por
 `translate` para os dois não brigarem pela mesma propriedade. As três palavras
@@ -51,21 +51,20 @@ rege o seu contraste.
 
 ## Paletas
 
-O botão no topo direito alterna **Entardecer**, **Areia** e **Azul claro**. Cada
+O botão no topo direito alterna **Montanha**, **Praia** e **Deserto**. Cada
 uma é um bloco de custom properties em `:root[data-theme="…"]`; a escolha fica no
-`localStorage` e, na primeira visita, quem prefere tema escuro começa em Azul
-claro.
+`localStorage` e, na primeira visita, quem prefere tema escuro começa em Deserto.
 
 Trocar de paleta troca a **arte**, não só as cores — cada uma tem a sua cena no
 pôster e o seu recorte de colinas:
 
 | Paleta     | Cenário                                    | Quem leva o convite                   |
 | ---------- | ------------------------------------------ | ------------------------------------- |
-| Entardecer | a foto `assets/bg-beach-mountain.webp`, céu branco | o convite alado                       |
-| Areia      | céu liso                                   | uma pipa caixa com o convite na linha |
-| Azul claro | a foto `assets/bg-desert.webp`              | o pombo-correio puxando a fita        |
+| Montanha   | a foto `assets/bg-beach-mountain.webp`, céu branco | o convite alado                       |
+| Praia      | a foto `assets/bg-beach.webp`, com sol       | uma pipa caixa com o convite na linha |
+| Deserto    | a foto `assets/bg-desert.webp`              | o pombo-correio puxando a fita        |
 
-Só a paleta Azul claro veste o fundo com foto. O PNG tem o céu recortado — é só
+As três paletas vestem o fundo com foto. Cada uma tem o céu recortado — é só
 a paisagem, metade da imagem em transparência — o que permite empilhar assim:
 
 | Camada          | z-index | O quê                                  |

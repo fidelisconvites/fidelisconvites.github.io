@@ -528,9 +528,9 @@
     if (!botao || !nome) return;
 
     const opcoes = [
-      { id: 'entardecer', rotulo: 'Entardecer', cor: '#ffffff' },
-      { id: 'areia',      rotulo: 'Areia',      cor: '#eae3c6' },
-      { id: 'azul',       rotulo: 'Azul claro', cor: '#038daa' }
+      { id: 'entardecer', rotulo: 'Montanha',   cor: '#ffffff' },
+      { id: 'areia',      rotulo: 'Praia',      cor: '#eae3c6' },
+      { id: 'azul',       rotulo: 'Deserto',    cor: '#038daa' }
     ];
 
     const guardado = (() => {
